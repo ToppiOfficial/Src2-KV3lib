@@ -1,14 +1,21 @@
 class KVValue:
-    """Base class for KV typed values.
+    """Base class for KeyValues typed values.
 
     Subclasses must implement __str__ to produce KV-compliant serialization.
     """
     def __str__(self):
         raise NotImplementedError
+    
+class KVVector2(KVValue):
+    """Represents a 2D vector."""
+    def __init__(self, x, y):
+        self.x, self.y = x, y
 
+    def __str__(self):
+        return f"[ {self.x}, {self.y} ]"
 
 class KVVector3(KVValue):
-    """Represents a 3D vector for KV files."""
+    """Represents a 3D vector."""
     def __init__(self, x, y, z):
         self.x, self.y, self.z = x, y, z
 
@@ -16,7 +23,7 @@ class KVVector3(KVValue):
         return f"[ {self.x}, {self.y}, {self.z} ]"
     
 class KVVector4(KVValue):
-    """Represents a 4D vector (e.g., RGBA color or quaternion)."""
+    """Represents a 4D vector."""
     def __init__(self, x, y, z, w):
         self.x, self.y, self.z, self.w = x, y, z, w
 
@@ -24,7 +31,7 @@ class KVVector4(KVValue):
         return f"[ {self.x}, {self.y}, {self.z}, {self.w} ]"
 
 class KVBool(KVValue):
-    """Represents a boolean literal (true/false) in KV files."""
+    """Represents a boolean literal (true/false)."""
     def __init__(self, value: bool):
         self.value = bool(value)
 
@@ -41,10 +48,9 @@ class KVArray(KVValue):
         return f"[ {formatted} ]"
 
 class KVHeader:
-    """Represents the header for KV2 or KV3 modeldoc files.
+    """Represents the header for KeyValues.
 
     Attributes:
-        version: 'kv2' or 'kv3'
         encoding: Encoding type (usually 'text')
         encoding_version: GUID for KV encoding version
         format: ModelDoc format version (e.g., 'modeldoc28')
@@ -53,27 +59,22 @@ class KVHeader:
     DEFAULT_ENCODING_GUID = "{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d}"
     MODEL_DOC_GUID = "{fb63b6ca-f435-4aa0-a2c7-c66ddc651dca}"  # modeldoc28 GUID
 
-    def __init__(self, version="kv3", encoding="text", encoding_version=None,
+    def __init__(self, encoding="text", encoding_version=None,
                  format="modeldoc28", format_version=None):
-        if version not in ("kv2", "kv3"):
-            raise ValueError("version must be 'kv2' or 'kv3'")
-        self.version = version
+        self.version = "kv3"
         self.encoding = encoding
         self.encoding_version = encoding_version or self.DEFAULT_ENCODING_GUID
         self.format = format
         self.format_version = format_version or self.MODEL_DOC_GUID
 
     def __str__(self):
-        if self.version == "kv3":
-            return (f"<!-- kv3 encoding:{self.encoding}"
-                    f":version{self.encoding_version} "
-                    f"format:{self.format}"
-                    f":version{self.format_version} -->")
-        elif self.version == "kv2":
-            return f"<!-- kv2 {self.format} -->"
+        return (f"<!-- kv3 encoding:{self.encoding}"
+                f":version{self.encoding_version} "
+                f"format:{self.format}"
+                f":version{self.format_version} -->")
 
 class KVNode:
-    """Represents a single node in a KV tree.
+    """Represents a single node in a KeyValues tree.
 
     Attributes:
         _class: Type of the node (e.g., 'RootNode', 'DefineBone')
@@ -103,14 +104,14 @@ class KVNode:
             return False
 
     def _serialize(self, indent=0, wrap_root=False) -> str:
-        """Serialize this node to a KV string.
+        """Serialize this node to a KeyValues string.
 
         Args:
             indent: Number of indentation levels (for pretty printing)
             wrap_root: If True, skip writing _class and name (used for top-level wrapping)
 
         Returns:
-            str: KV-compliant string representation
+            str: KeyValues-compliant string representation
         """
         tab = "    " * indent
         out = f"{tab}{{\n"
@@ -143,7 +144,8 @@ class KVNode:
         if isinstance(value, KVNode):
             return value._serialize()
         if isinstance(value, str):
-            return f'"{value}"'
+            escaped = value.replace("\n", "\\n")
+            return f'"{escaped}"'
         if isinstance(value, (int, float)):
             return str(value)
         if isinstance(value, (list, tuple)):
