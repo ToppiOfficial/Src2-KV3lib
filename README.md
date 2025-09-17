@@ -2,6 +2,10 @@
 
 **Src2KVLib** is a Python library for creating, manipulating, and serializing Source 2 KeyValue (KV) files such as for ModelDoc.
 
+## Requirements
+
+**Python 3.6+**
+
 # Example
 ```py
 from keyvalue import KVNode, KVVector3, KVArray, KVBool, KVHeader
