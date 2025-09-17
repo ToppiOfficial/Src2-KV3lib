@@ -1,6 +1,6 @@
-# Src2-KVLib
+# Src2-KV3Lib
 
-**Src2-KVLib** is a Python library for creating, manipulating, and serializing Source 2 KeyValues (KV), such as those used in ModelDoc.
+**Src2-KV3Lib** is a Python library for creating, manipulating, and serializing Source 2 KeyValues3 (KV3), such as those used in ModelDoc.
 
 ## Requirements
 
@@ -8,20 +8,22 @@
 
 # Example
 ```py
-from keyvalue import KVNode, KVVector3, KVArray, KVBool, KVHeader
-
 root = KVNode("RootNode")
 scratch = KVNode("ScratchArea")
+
 bone = KVNode(
     "DefineBone",
-    name="eye_track_left_right",
-    origin=KVVector3(0.0, 0.0, 0.0),
-    angles=KVArray(0.0, 90.0, 180.0),
+    name="test_bone",
+    note="Hello this is a test note\nand for multiline as well",
+    origin=KVVector3(15.0, 0.0, 0.0),
+    angles=KVArray(25.0, 90.0, 90.0),
     do_not_discard=KVBool(False),
     parent_bone="head_0"
 )
+
 scratch.add_child(bone)
 root.add_child(scratch)
+
 root.properties.update({
     "model_archetype": "",
     "primary_associated_entity": "",
@@ -29,8 +31,9 @@ root.properties.update({
     "document_sub_type": "ModelDocSubType_None"
 })
 
-header = KVHeader(format="modeldoc28")
+header = KVHeader()
 kv_text = root.to_kv(header, key="rootNode")
+
 print(kv_text)
 ```
 
@@ -50,9 +53,10 @@ print(kv_text)
                 children = [
                     {
                         _class = "DefineBone"
-                        name = "TEST"
-                        origin = [ 0.0, 0.0, 0.0 ]
-                        angles = [ 0.0, 90.0, 180.0 ]
+                        name = "test_bone"
+                        note = "Hello this is a test note\nand for multiline as well"
+                        origin = [ 15.0, 0.0, 0.0 ]
+                        angles = [ 25.0, 90.0, 90.0 ]
                         do_not_discard = false
                         parent_bone = "head_0"
                     },
