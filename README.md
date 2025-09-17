@@ -1,6 +1,6 @@
-# Src2KVLib
+# Src2-KVLib
 
-**Src2KVLib** is a Python library for creating, manipulating, and serializing Source 2 KeyValue (KV) files such as for ModelDoc.
+**Src2-KVLib** is a Python library for creating, manipulating, and serializing Source 2 KeyValues (KV), such as those used in ModelDoc.
 
 ## Requirements
 
