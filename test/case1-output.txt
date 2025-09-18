@@ -1,0 +1,51 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+    Weapon_SMG_SILVERWOLF.Clipin =     {
+        type = "csgo_mega"
+        preload_vsnds = true
+        volume = 0.5
+        pitch = 1.0
+        position_offset = [ 0.0, 0.0, 60.0 ]
+        display_broadcast = true
+        vsnd_files_track_01 = "weapons/models/toppi/smg_silverwolf/smg_silverwolf/sounds/smg_silverwolfclip_in.vsnd"
+        distance_volume_mapping_curve = [ [ 50.28, 1.0, 0, -0.002969, 0, 0 ], [ 267.14, 0.356223, -0.002969, -0.000953, 0, 1 ], [ 1100.0, 0, -0.000428, 0, 0, 0 ] ]
+        distance_unfiltered_stereo_mapping_curve = [ [ 30.0, 1, 0, 0, 2, 3 ], [ 35.0, 0, 0, 0, 2, 3 ], [ 300.0, 0, 0, 0, 2, 3 ] ]
+        vsnd_duration = 0.301973
+    }
+    Weapon_SMG_SILVERWOLF.Boltback =     {
+        type = "csgo_mega"
+        preload_vsnds = true
+        volume = 0.5
+        pitch = 1.0
+        position_offset = [ 0.0, 0.0, 60.0 ]
+        display_broadcast = true
+        vsnd_files_track_01 = "weapons/models/toppi/smg_silverwolf/smg_silverwolf/sounds/smg_silverwolfslideback.vsnd"
+        distance_volume_mapping_curve = [ [ 50.28, 1.0, 0, -0.002969, 0, 0 ], [ 267.14, 0.356223, -0.002969, -0.000953, 0, 1 ], [ 1100.0, 0, -0.000428, 0, 0, 0 ] ]
+        distance_unfiltered_stereo_mapping_curve = [ [ 30.0, 1, 0, 0, 2, 3 ], [ 35.0, 0, 0, 0, 2, 3 ], [ 300.0, 0, 0, 0, 2, 3 ] ]
+        vsnd_duration = 0.301973
+    }
+    Weapon_SMG_SILVERWOLF.Boltforward =     {
+        type = "csgo_mega"
+        preload_vsnds = true
+        volume = 0.5
+        pitch = 1.0
+        position_offset = [ 0.0, 0.0, 60.0 ]
+        display_broadcast = true
+        vsnd_files_track_01 = "weapons/models/toppi/smg_silverwolf/smg_silverwolf/sounds/smg_silverwolfslideforward.vsnd"
+        distance_volume_mapping_curve = [ [ 50.28, 1.0, 0, -0.002969, 0, 0 ], [ 267.14, 0.356223, -0.002969, -0.000953, 0, 1 ], [ 1100.0, 0, -0.000428, 0, 0, 0 ] ]
+        distance_unfiltered_stereo_mapping_curve = [ [ 30.0, 1, 0, 0, 2, 3 ], [ 35.0, 0, 0, 0, 2, 3 ], [ 300.0, 0, 0, 0, 2, 3 ] ]
+        vsnd_duration = 0.301973
+    }
+    Weapon_SMG_SILVERWOLF.Charged =     {
+        type = "csgo_mega"
+        preload_vsnds = true
+        volume = 0.5
+        pitch = 1.0
+        position_offset = [ 0.0, 0.0, 60.0 ]
+        display_broadcast = true
+        vsnd_files_track_01 = "weapons/models/toppi/smg_silverwolf/smg_silverwolf/sounds/smg_silverwolfcharged.vsnd"
+        distance_volume_mapping_curve = [ [ 50.28, 1.0, 0, -0.002969, 0, 0 ], [ 267.14, 0.356223, -0.002969, -0.000953, 0, 1 ], [ 1100.0, 0, -0.000428, 0, 0, 0 ] ]
+        distance_unfiltered_stereo_mapping_curve = [ [ 30.0, 1, 0, 0, 2, 3 ], [ 35.0, 0, 0, 0, 2, 3 ], [ 300.0, 0, 0, 0, 2, 3 ] ]
+        vsnd_duration = 0.301973
+    }
+}

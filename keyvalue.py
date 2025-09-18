@@ -68,7 +68,7 @@ class KVHeader:
         self.format_version = format_version or self.MODEL_DOC_GUID
 
     def __str__(self):
-        return (f"<!-- kv3 encoding:{self.encoding}"
+        return (f"<!-- {self.version} encoding:{self.encoding}"
                 f":version{self.encoding_version} "
                 f"format:{self.format}"
                 f":version{self.format_version} -->")
@@ -82,9 +82,7 @@ class KVNode:
         children: List of child KVNode objects
         properties: Arbitrary key-value pairs (str, KVValue, int, float, list, etc.)
     """
-    def __init__(self, _class: str, name: str = "", **kwargs):
-        self._class = _class
-        self.name = name
+    def __init__(self, **kwargs):
         self.children = []
         self.properties = kwargs
 
@@ -103,24 +101,18 @@ class KVNode:
         except ValueError:
             return False
 
-    def _serialize(self, indent=0, wrap_root=False) -> str:
+    def _serialize(self, indent=0) -> str:
         """Serialize this node to a KeyValues string.
 
         Args:
             indent: Number of indentation levels (for pretty printing)
-            wrap_root: If True, skip writing _class and name (used for top-level wrapping)
 
         Returns:
             str: KeyValues-compliant string representation
         """
         tab = "    " * indent
         out = f"{tab}{{\n"
-
-        if not wrap_root:
-            out += f'{tab}    _class = "{self._class}"\n'
-            if self.name:
-                out += f'{tab}    name = "{self.name}"\n'
-
+        
         # Properties
         for key, value in self.properties.items():
             out += f"{tab}    {key} = {self._format_value(value)}\n"
@@ -146,8 +138,6 @@ class KVNode:
         if isinstance(value, str):
             escaped = value.replace("\n", "\\n")
             return f'"{escaped}"'
-        if isinstance(value, (int, float)):
-            return str(value)
         if isinstance(value, (list, tuple)):
             return "[ " + ", ".join(KVNode._format_value_static(v) for v in value) + " ]"
         return str(value)
@@ -155,19 +145,25 @@ class KVNode:
     def _format_value(self, value):
         """Instance wrapper for static format method."""
         return self._format_value_static(value)
+    
+class KVDocument:
+    """Represents a full KV3 document, including header and multiple top-level keys."""
+    def __init__(self, format="modeldoc28", format_version=None, encoding="text", encoding_version=None):
+        self.header = KVHeader(encoding=encoding, encoding_version=encoding_version,
+                               format=format, format_version=format_version)
+        self.roots: dict[str, KVNode] = {}
 
-    def to_kv(self, header: KVHeader = None, key: str = "rootNode") -> str:
-        """Serialize this node with an optional top-level key (default: rootNode).
+    def add_root(self, key: str, node: KVNode):
+        """Add a top-level root node."""
+        self.roots[key] = node
+        
+    def remove_root(self, key: str) -> bool:
+        """Remove a root node by key. Returns True if removed, False if not found."""
+        return self.roots.pop(key, None) is not None
 
-        Args:
-            header: Optional KVHeader instance
-            key: Name of the top-level key
-
-        Returns:
-            str: Complete KV3 string including header
-        """
-        header = header or KVHeader(format="modeldoc28")
-        out = str(header) + "\n{\n"
-        out += f"    {key} = {self._serialize(indent=1, wrap_root=False)}\n"
+    def to_text(self) -> str:
+        out = str(self.header) + "\n{\n"
+        for key, node in self.roots.items():
+            out += f"    {key} = {node._serialize(indent=1)}\n"
         out += "}\n"
         return out
